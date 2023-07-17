@@ -1,0 +1,276 @@
+<div class="row mt-4">
+    <div class="col-md-3">
+        <ul *ngIf="cities" class="list-group">
+            <li class="list-group-item">Find Cinemas By City</li>
+            <li *ngFor="let city of cities" [ngClass]="city.name==currentCity.name?'active':''" 
+                class="list-group-item clickable" (click)="onGetCinema(city)">
+
+                <div *ngIf="showUpdateCityFlag !== city.id; else updateCit"
+                    class="d-flex justify-content-between">
+                    <div>{{city.name}}</div>
+                    <div>
+                        <a (click)="showUpdateCity(city)" class="btn btn-outline-warning ms-1"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Update</a>
+                        <a (click)="deleteCity(city.id)" class="btn btn-outline-danger ms-1"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Delete</a>
+                    </div>
+                </div>
+                <ng-template #updateCit class="d-flex ">
+                    <input type="text" class="form-control" [(ngModel)]="cityForUpdate.name">
+                    <div class="d-flex flex-row-reverse">
+                        <a (click)="closeUpdateCity()" class="btn btn-dark ms-1"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Close</a>
+                        <a (click)="updateCity()" class="btn btn-info ms-1"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Update</a>
+                    </div>
+                </ng-template>
+            </li>
+            <li class="row">
+                <div class="col-9 pe-0">
+                    <input type="text" placeholder="Add new city" class="form-control" [(ngModel)]="newCity">
+                </div>
+                <div class="col-3 ps-0 d-flex flex-column">
+                    <button type="button" class="btn btn-success" (click)="addCity()">Add</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-9">
+        <div class="card border shadow-0 mb-3">
+            <div class="card-header">Cinema For {{cityName}} </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-end">
+                    <div class="pe-0">
+                        <input type="text" placeholder="Add new cinema" class="form-control"
+                            [(ngModel)]="newCinema">
+                    </div>
+                    <div class="ps-0 d-flex flex-column">
+                        <button type="button" class="btn btn-success mx-1 mt-1"
+                            style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                            (click)="addCinema()">Add</button>
+                    </div>
+                </div>
+                <ul *ngIf="cinemas" class="nav nav-tabs nav-fill mt-2" style="background: #f0f2f5;">
+                    <li *ngFor="let cinema of cinemas" class="nav-item">
+                        <div *ngIf="showUpdateCinemaFlag !== cinema.id; else updateCin"
+                            class="d-flex justify-content-between">
+                            <a [ngClass]="cinema.name==currentCinema.name?'active':''" class="nav-link"
+                                (click)="selectCinema(cinema)">
+                                {{cinema.name}}
+                                <div class="mt-2">
+                                    <a (click)="showUpdateCinema(cinema)" class="btn btn-outline-warning ms-1"
+                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Update</a>
+                                    <a (click)="deleteCinema(cinema.id)" class="btn btn-outline-danger ms-1"
+                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Delete</a>
+                                    <a (click)="getHallsForCinema(cinema.id)" class="btn btn-outline-dark ms-1"
+                                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;"
+                                        data-bs-toggle="modal" data-bs-target="#exampleModalEditHalls">Edit halls</a>
+                                </div>
+                            </a>
+                        </div>
+                        <ng-template #updateCin class="d-flex ">
+                            <input type="text" class="form-control" [(ngModel)]="cinemaForUpdate.name">
+                            <div class="d-flex flex-row-reverse">
+                                <a (click)="closeUpdateCinema()" class="btn btn-dark ms-1"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Close</a>
+                                <a (click)="updateCinema()" class="btn btn-info ms-1"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Update</a>
+                            </div>
+                        </ng-template>
+
+                    </li>
+                </ul>
+
+                <div class="d-flex justify-content-between align-items-center my-3 px-3">
+                    <a class="btn btn-success  mt-1 mb-1 me-4"
+                        style="width: 15%;" (click)="showAddProjection()" data-bs-toggle="modal"
+                        data-bs-target="#exampleModalProjection">Add projection</a>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="me-3">Select date for projections: </div><input class="form-control w-25"
+                            type="date" [(ngModel)]="selectedDate" (ngModelChange)="changedSelectedDate()">
+                    </div>
+                </div>
+                <div *ngIf="projections" class="tab-content"
+                    id="pills-tabContent">
+                    <div *ngFor="let proj of projections" class="list-group">
+                        <a class="list-group-item list-group-item-action">
+                            <div class="row">
+                                <div class="col-2">
+                                    <img class="rounded me-3" style="height: 150px; width: 100px;"
+                                        src="{{proj.movie.photo}}" (click)="goToBooking(proj)">
+                                </div>
+                                <div class="col-3">
+                                    <div class="w-100">
+                                        <h5 class="mb-1">{{proj.movie.title}}</h5>
+                                    </div>
+                                    <p class="mb-1">Director: {{proj.movie.director}}</p>
+                                    <p class="mb-1">Release date: {{proj.movie.releaseDate}}</p>
+                                    <p class="mb-1">Duration: {{proj.movie.duration}}</p>
+                                    <p class="mb-1">Category: {{proj.movie.category.name}}</p>
+
+                                    <small class="text-muted">Average rat: {{proj.movie.averageRate}}</small>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-1">
+                                        <strong class="card-title">City:
+                                            {{proj.hall.cinema.city.name}}</strong><br>
+                                        <strong class="card-title">Cinema:
+                                            {{proj.hall.cinema.name}}</strong><br>
+                                        <strong class="card-title">Hall: {{proj.hall.name}}</strong><br>
+                                        <strong class="card-title">Date: {{proj.dateProjection}}</strong><br>
+                                        <strong class="card-title">Start time: {{proj.startTime.slice(0,
+                                            5)}}</strong><br>
+                                        <strong class="card-title">Price: {{proj.price}} din</strong><br>
+                                    </div>
+                                </div>
+                                <div class="col-3 d-flex align-items-center">
+                                    <button class="me-3 iconSVG editSVG" (click)="showUpdateProjection(proj)" data-bs-toggle="modal" data-bs-target="#exampleModalProjection"><img title="Update projection" src="assets/images/edit.svg"></button>
+                                    <button class="iconSVG deleteSVG"><img (click)="deleteProjection(proj.id)" title="Delete Projection" src="assets/images/delete.svg"></button>
+                                    <!-- <a class="btn btn-primary" (click)="showUpdateProjection(proj)"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalProjection">Update</a>
+
+                                    <a class="btn btn-danger ms-1"
+                                        (click)="deleteProjection(proj.id)">Delete</a> -->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade" id="exampleModalProjection" tabindex="-1" aria-labelledby="exampleModalLabelProjection"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 *ngIf="projectionForUpdate && showAddModal===false" class="modal-title fs-5"
+                    id="exampleModalLabelProjection">
+                    Update projection:
+                </h1>
+                <h1 *ngIf="showAddModal===true" class="modal-title fs-5" id="exampleModalLabelProjection">
+                    Add projection:
+                </h1>
+            </div>
+            <div *ngIf="projectionForUpdate" class="modal-body ps-4">
+                <div class="ps-2">
+                    Date: <input class="form-control" type="date" [(ngModel)]="projectionForUpdate.dateProjection"><br>
+                    Start time: <input class="form-control" type="time" [(ngModel)]="projectionForUpdate.startTime"><br>
+                    Price: <input type="number" [(ngModel)]="projectionForUpdate.price"> din<br><br>
+                    <div *ngIf="citiesForSelect">
+                        City:
+                        <select [(ngModel)]="projectionForUpdate.hall.cinema.city.id"
+                            (ngModelChange)="loadCinemasForSelect($event, true)">
+                            <option [value]="0" disabled>Choose city</option>
+                            <option *ngFor="let c of citiesForSelect" [value]="c.id">
+                                {{ c.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mt-2" *ngIf="cinemasForSelect">
+                        Cinema:
+                        <select [(ngModel)]="projectionForUpdate.hall.cinema.id"
+                            (ngModelChange)="loadHallsForSelect($event, true)">
+                            <option [value]="0" disabled>Choose cinema</option>
+                            <option *ngFor="let c of cinemasForSelect" [value]="c.id">
+                                {{ c.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mt-2" *ngIf="hallsForSelect">
+                        Hall:
+                        <select [(ngModel)]="projectionForUpdate.hall.id">
+                            <option [value]="0" disabled>Choose hall</option>
+                            <option *ngFor="let h of hallsForSelect" [value]="h.id">
+                                {{ h.name }} - {{ h.id }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mt-2" *ngIf="moviesForSelect">
+                        Movie:
+                        <select [(ngModel)]="projectionForUpdate.movie.id">
+                            <option [value]="0" disabled>Choose movie</option>
+                            <option *ngFor="let m of moviesForSelect" [value]="m.id">
+                                {{ m.title }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div *ngIf="!addProjectionComplete()" style="color: red;">Fill in all the fields!</div>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    (click)="resetModal()">Close</button>
+                <button *ngIf="projectionForUpdate && showAddModal===false && addProjectionComplete()" type="button"
+                    (click)="updateProjection()" class="btn btn-primary" data-bs-dismiss="modal">Update</button>
+                <button *ngIf="projectionForUpdate && showAddModal===false && !addProjectionComplete()" disabled
+                    type="button" class="btn btn-primary">Update</button>
+                <button *ngIf="showAddModal===true && addProjectionComplete()" type="button" (click)="addProjection()"
+                    class="btn btn-primary" data-bs-dismiss="modal">Add projection</button>
+                <button *ngIf="showAddModal===true && !addProjectionComplete()" disabled type="button"
+                    class="btn btn-primary">Add projection</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalEditHalls" tabindex="-1" aria-labelledby="exampleModalLabelEditHalls"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabelEditHalls">Edit halls</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="list-group">
+                    <a *ngFor="let h of halls" class="list-group-item list-group-item-action">
+                        <div *ngIf="showUpdateHallFlag !== h.id; else updateHal" class="d-flex justify-content-between">
+                            <div>{{h.name}}</div>
+                            <div>
+                                <a (click)="showUpdateHall(h)" class="btn btn-outline-primary ms-1"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Update</a>
+                                <a (click)="deleteHall(h.id)" class="btn btn-outline-danger ms-1"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Delete</a>
+                            </div>
+                        </div>
+                        <ng-template #updateHal class="d-flex ">
+                            <input type="text" class="form-control" [(ngModel)]="hallForUpdate.name">
+                            <div class="d-flex flex-row-reverse">
+                                <a (click)="closeUpdateHall()" class="btn btn-outline-secondary ms-1"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Close</a>
+                                <a (click)="updateHall()" class="btn btn-outline-primary ms-1"
+                                    style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Update</a>
+                            </div>
+                        </ng-template>
+                    </a>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-10 pe-0">
+                        <input type="text" placeholder="Insert new hall name" class="form-control"
+                            [(ngModel)]="newHallName">
+                        <div class="row ms-0" style="width: 396.66px; height: 37.6px;">
+                            <label class="col form-control">Insert seats number: </label>
+                            <input type="number" placeholder="Insert seats number" class="col form-control"
+                                [(ngModel)]="newHallSeatsNum">
+                        </div>
+                    </div>
+                    <div class="col-2 ps-0 d-flex flex-column">
+                        <button type="button" class="btn btn-success d-flex flex-column mt-3"
+                            (click)="addHall()">Add</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
