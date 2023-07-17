@@ -1,0 +1,11 @@
+.nav-link:hover {
+    color: #a9a9a9;
+}
+
+.homeSVG {
+    margin-bottom: 5px;
+}
+
+.homeSVG:hover {
+    filter: brightness(0) saturate(100%) invert(65%) sepia(45%) saturate(22%) hue-rotate(71deg) brightness(95%) contrast(99%);
+}

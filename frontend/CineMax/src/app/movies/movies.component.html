@@ -1,0 +1,173 @@
+<div class="d-flex justify-content-center">
+<div class="py-3" style="width: 1350px;">
+    <h2 class="card card-header text-center">Movies</h2>
+    <div class="card card-body">
+        <div class="d-flex justify-content-between px-4">
+            <div>
+                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                    data-bs-target="#exampleModalFilters">Filters</button>
+            </div>
+
+            <div>
+                <label class="me-1">Sort by release date: </label>
+                <button type="button" class="btn btn-outline-secondary me-3" (click)="changeSort()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-sort-down" viewBox="0 0 16 16">
+                        <path *ngIf="sort==='desc'"
+                            d="M3.5 2.5a.5.5 0 0 0-1 0v8.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L3.5 11.293V2.5zm3.5 1a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z">
+                        </path>
+                        <path *ngIf="sort==='asc'"
+                            d="M3.5 12.5a.5.5 0 0 1-1 0V3.707L1.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L3.5 3.707V12.5zm3.5-9a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zM7.5 6a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zm0 3a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <nav aria-label="..." class="d-flex justify-content-center mt-4">
+            <ul class="pagination">
+                <div *ngIf="currentPage===0; else elseBlock">
+                    <li class="page-item disabled  me-1">
+                        <span class="page-link btn btn-light border border-secondary border-opacity-25">Previous</span>
+                    </li>
+                </div>
+                <ng-template #elseBlock>
+                    <li class="page-item  me-1">
+                        <a class="page-link btn btn-light border border-secondary"
+                            (click)="decrementPage()">Previous</a>
+                    </li>
+                </ng-template>
+
+                <div *ngFor="let item of createRange(pageCount); index as i">
+                    <div *ngIf="i!==currentPage; else elseBlock2">
+                        <li class="page-item">
+                            <a class="btn btn-light border border-secondary" (click)="goToPage(i)">{{i + 1}}</a>
+                        </li>
+                    </div>
+                    <ng-template #elseBlock2>
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{i + 1}}</span>
+                        </li>
+                    </ng-template>
+                </div>
+
+                <div *ngIf="currentPage===pageCount-1; else elseBlock1">
+                    <li class="page-item disabled ms-1">
+                        <span class="page-link btn btn-light border border-secondary border-opacity-25">Next</span>
+                    </li>
+                </div>
+                <ng-template #elseBlock1>
+                    <li class="page-item ms-1">
+                        <a class="page-link btn btn-light border border-secondary" (click)="incrementPage()">Next</a>
+                    </li>
+                </ng-template>
+            </ul>
+        </nav>
+
+
+
+        <div class="album py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3" *ngFor="let movie of movies;">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top slika" src="{{movie.photo}}" alt="Card image cap"
+                                (click)="goToDetails(movie)">
+                            <div class="card-body  pb-0">
+                                <h5 class="card-title naslov text-center">{{movie.title}}</h5>
+                            </div>
+                            <div class="card-body pt-0 d-flex justify-content-center">
+                                <!-- <a class="btn btn-primary" (click)="gotoDetails(movie)">Details</a> -->
+                                <!-- <a href="https://www.flaticon.com/free-icons/overview" title="overview icons">Overview icons created by Kiranshastry - Flaticon</a> -->
+                                <button style="background-color: white;" class="border border-0" (click)="goToDetails(movie)"><img style="height: 35px; width: 35px; background-color: white;" src="assets/images/more-details.png" title="More details"></button>
+                                <a routerLink="" class="btn btn-success ms-2"
+                                    (click)="gotoTickets(movie)">Projections</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav aria-label="..." class="d-flex justify-content-center">
+            <ul class="pagination">
+                <div *ngIf="currentPage===0; else elseBlock">
+                    <li class="page-item disabled  me-1">
+                        <span class="page-link btn btn-light border border-secondary border-opacity-25">Previous</span>
+                    </li>
+                </div>
+                <ng-template #elseBlock>
+                    <li class="page-item  me-1">
+                        <a class="page-link btn btn-light border border-secondary"
+                            (click)="decrementPage()">Previous</a>
+                    </li>
+                </ng-template>
+
+                <div *ngFor="let item of createRange(pageCount); index as i">
+                    <div *ngIf="i!==currentPage; else elseBlock2">
+                        <li class="page-item">
+                            <a class="btn btn-light border border-secondary" (click)="goToPage(i)">{{i + 1}}</a>
+                        </li>
+                    </div>
+                    <ng-template #elseBlock2>
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{i + 1}}</span>
+                        </li>
+                    </ng-template>
+                </div>
+
+                <div *ngIf="currentPage===pageCount-1; else elseBlock1">
+                    <li class="page-item disabled ms-1">
+                        <span class="page-link btn btn-light border border-secondary border-opacity-25">Next</span>
+                    </li>
+                </div>
+                <ng-template #elseBlock1>
+                    <li class="page-item ms-1">
+                        <a class="page-link btn btn-light border border-secondary" (click)="incrementPage()">Next</a>
+                    </li>
+                </ng-template>
+            </ul>
+        </nav>
+    </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="exampleModalFilters" tabindex="-1" aria-labelledby="exampleModalLabelFilters"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabelFilters">Filter movies</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Search by title:</label>
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" aria-label="Search by title:"
+                                aria-describedby="button-addon2" [(ngModel)]="titleFilter" value="{{titleFilter}}">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Select genre:</label>
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="selectedCategory">
+                            <option [ngValue]='0'></option>
+                            <option *ngFor="let c of categories" [ngValue]="c.id">{{c.name}}</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Filter by release year:</label>
+                        <input class="ms-2" type="number" min="1930" max="2050" step="1" [(ngModel)]="year" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-success" (click)="filterMovies()">Apply filters</button>
+                <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">Reset filters</button>
+            </div>
+        </div>
+    </div>
+</div>
