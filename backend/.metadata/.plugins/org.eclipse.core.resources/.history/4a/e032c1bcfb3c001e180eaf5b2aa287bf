@@ -1,0 +1,19 @@
+package com.project.cinemax.events;
+
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TicketDeletedEventPublisher {
+
+    private final ApplicationEventPublisher eventPublisher;
+
+    public TicketDeletedEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
+    public void publishEvent() {
+    	TicketDeletedEvent customEvent = new TicketDeletedEvent(this);
+        eventPublisher.publishEvent(customEvent);
+    }
+}

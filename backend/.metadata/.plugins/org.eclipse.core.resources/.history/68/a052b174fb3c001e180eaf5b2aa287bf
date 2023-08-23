@@ -1,0 +1,13 @@
+package com.project.cinemax.events;
+
+import org.springframework.context.ApplicationEvent;
+
+public class TicketDeletedEvent extends ApplicationEvent {
+	
+	private static final long serialVersionUID = 1L;
+
+	public TicketDeletedEvent(Object source) {
+        super(source);
+    }
+    
+}

@@ -1,0 +1,5 @@
+package com.project.cinemax.events;
+
+public class TicketDeletedEventPublisher {
+
+}

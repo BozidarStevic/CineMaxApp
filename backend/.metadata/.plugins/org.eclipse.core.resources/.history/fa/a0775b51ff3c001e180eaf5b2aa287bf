@@ -1,0 +1,22 @@
+package com.project.cinemax.events;
+
+import org.springframework.context.ApplicationEvent;
+
+import com.project.cinemax.model.Seat;
+
+public class TicketDeletedEvent extends ApplicationEvent {
+	
+	private static final long serialVersionUID = 1L;
+
+	private final Seat eventData;
+
+    public TicketDeletedEvent(Object source, Seat eventData) {
+        super(source);
+        this.eventData = eventData;
+    }
+
+    public Seat getEventData() {
+        return eventData;
+    }
+    
+}

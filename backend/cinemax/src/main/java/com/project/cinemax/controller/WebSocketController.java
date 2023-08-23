@@ -1,0 +1,66 @@
+package com.project.cinemax.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
+
+import com.project.cinemax.events.TicketDeletedEvent;
+import com.project.cinemax.model.WSMessage;
+import com.project.cinemax.util.SelectedSeatsSingleton;
+
+@Controller
+public class WebSocketController {
+	
+	@Autowired
+	SimpMessagingTemplate simpMessagingTemplate;
+	
+	
+	@MessageMapping("/sendMessage/{projectionId}")
+    public void sendMessage(@DestinationVariable Integer projectionId, @Payload WSMessage message) {
+		
+		Integer seatId = message.getSeatId();
+		
+		String dynamicPath = "/topic/" + projectionId;
+	    simpMessagingTemplate.convertAndSend(dynamicPath, message);
+	    
+	    updateSingleton(projectionId, seatId);
+	    
+    }
+	
+	@EventListener
+    public void sendMessageTicketDeleted(TicketDeletedEvent ticketDeletedEvent) {
+		Integer projectionId = ticketDeletedEvent.getProjectionId();
+		Integer seatId = ticketDeletedEvent.getSeatId();
+		WSMessage message = new WSMessage(seatId);
+		
+		sendMessage(projectionId, message);
+	}
+	
+	private void updateSingleton(Integer projectionId, Integer seatId) {
+		
+		SelectedSeatsSingleton selectedSeatsSingleton = SelectedSeatsSingleton.getInstance();
+	    HashMap<Integer, ArrayList<Integer>> map = selectedSeatsSingleton.getMap();
+	    
+	    
+	    if (map.isEmpty() || !map.containsKey(projectionId)) {
+	    	map.put(projectionId, new ArrayList<Integer>());
+	    }
+	    ArrayList<Integer> selectedSeats = map.get(projectionId);
+	    
+	    
+	    if (!selectedSeats.contains(seatId)) {
+	    	selectedSeats.add(seatId);
+	    } 
+	    else {
+	    	selectedSeats.remove((Integer) seatId);
+		}
+	}
+	
+}

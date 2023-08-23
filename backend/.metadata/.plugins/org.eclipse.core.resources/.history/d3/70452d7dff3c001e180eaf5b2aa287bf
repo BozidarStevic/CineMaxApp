@@ -1,0 +1,57 @@
+package com.project.cinemax.controller;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
+
+import com.project.cinemax.events.TicketDeletedEvent;
+import com.project.cinemax.model.WSMessage;
+import com.project.cinemax.util.SelectedSeatsSingleton;
+
+@Controller
+public class WebSocketController {
+	
+	@Autowired
+	SimpMessagingTemplate simpMessagingTemplate;
+	
+	@EventListener
+	@MessageMapping("/sendMessage/{projectionId}")
+    public void sendMessage(@DestinationVariable Integer projectionId, @Payload WSMessage message, TicketDeletedEvent ticketDeletedEvent) {
+		
+		Integer seatId = message.getSeatId();
+		
+		if (ticketDeletedEvent.getEventData() != null) {
+			seatId = (Integer) ticketDeletedEvent.getEventData().getId().intValue();
+			message.setSeatId(seatId);
+		}
+		
+		String dynamicPath = "/topic/" + projectionId;
+	    simpMessagingTemplate.convertAndSend(dynamicPath, message);
+	    
+	    SelectedSeatsSingleton selectedSeatsSingleton = SelectedSeatsSingleton.getInstance();
+	    HashMap<Integer, ArrayList<Integer>> map = selectedSeatsSingleton.getMap();
+	    
+	    
+	    if (map.isEmpty() || !map.containsKey(projectionId)) {
+	    	map.put(projectionId, new ArrayList<Integer>());
+	    }
+	    ArrayList<Integer> selectedSeats = map.get(projectionId);
+	    
+	    
+	    if (!selectedSeats.contains(seatId)) {
+	    	selectedSeats.add(seatId);
+	    } 
+	    else {
+	    	selectedSeats.remove((Integer) seatId);
+		}
+	    
+    }
+	
+}

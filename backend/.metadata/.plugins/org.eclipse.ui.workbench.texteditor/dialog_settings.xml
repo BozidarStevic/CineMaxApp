@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="seatId"/>
+		<item key="casesensitive" value="true"/>
+		<item key="wholeword" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="message.getSeatId()"/>
+			<item value="MyEventPublisher"/>
+			<item value="projectionId1"/>
+			<item value="findFilmById"/>
+			<item value="CinemaRepository"/>
+			<item value="categoryRepository"/>
+			<item value="role"/>
+			<item value="resetAverageRate"/>
+		</list>
+		<list key="replacehistory">
+			<item value="seatId"/>
+			<item value="TicketDeletedEventPublisher"/>
+			<item value="projectionId"/>
+			<item value="CinemaService"/>
+			<item value="categoryService"/>
+			<item value="cinema"/>
+			<item value="Cinema"/>
+			<item value="hall"/>
+		</list>
+	</section>
+</section>
