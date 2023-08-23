@@ -1,0 +1,20 @@
+.naslov {
+    height: 50px;
+}
+
+.slika {
+    width: 304px;
+    height: 430px;
+}
+
+.pagination {
+    float: right;
+}
+
+#input-title {
+    width: 30%;
+    margin-left: 10px;
+}
+#buttonTitle {
+    margin-left: 10px;
+}

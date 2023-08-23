@@ -1,0 +1,12 @@
+.iconSVG {
+    border: unset;
+    background-color: unset;
+}
+
+.editSVG:hover {
+    filter: brightness(0) saturate(100%) invert(79%) sepia(53%) saturate(3191%) hue-rotate(166deg) brightness(97%) contrast(93%);
+}
+
+.deleteSVG:hover {
+    filter: brightness(0) saturate(100%) invert(83%) sepia(33%) saturate(1432%) hue-rotate(358deg) brightness(104%) contrast(94%);
+}

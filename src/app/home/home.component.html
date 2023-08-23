@@ -1,0 +1,65 @@
+<div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="4000">
+        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/e2ccc776215395.5c6318ae0df5f.jpg" class="slikaCarosel d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <!-- <h5>First slide label</h5>
+          <p>Some representative placeholder content for the first slide.</p> -->
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="4000">
+        <img src="https://www.redcarpetcinema.co.uk/img/sliders/imgSlider2.jpg" class="slikaCarosel d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <!-- <h5>Second slide label</h5>
+          <p>Some representative placeholder content for the second slide.</p> -->
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="4000">
+        <img src="http://www.wallpapers-full-hd.com/backgrounds/cinema-wall-seats-e.jpg" class="slikaCarosel d-block w-100" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+          <!-- <h5>Third slide label</h5>
+          <p>Some representative placeholder content for the third slide.</p> -->
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
+<br>
+
+<h2 class="d-flex justify-content-center">Top rated movies</h2>
+<owl-carousel-o [options]="customOptions">
+
+    <ng-container *ngFor="let slide of topRatedMovies">
+        <ng-template class="slide" carouselSlide [id]="slide.id">
+            <img class="slideImg" [src]="slide.photo" [title]="slide.title"  (click)="gotoDetails(slide)">
+        </ng-template>
+    </ng-container>
+
+</owl-carousel-o>
+
+<br>
+
+<h2 class="d-flex justify-content-center">New movies</h2>
+<owl-carousel-o [options]="customOptions">
+
+    <ng-container *ngFor="let slide of newMovies">
+        <ng-template class="slide" carouselSlide [id]="slide.id">
+            <img class="slideImg" [src]="slide.photo" [title]="slide.title"  (click)="gotoDetails(slide)">
+        </ng-template>
+    </ng-container>
+
+</owl-carousel-o>
