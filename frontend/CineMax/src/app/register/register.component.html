@@ -1,0 +1,69 @@
+
+
+<div class="d-flex justify-content-center my-4">
+    <div class="modal-content rounded-4 shadow" style="width: 500px;">
+        <div class="modal-header p-5 pb-4 border-bottom-0">
+            <h1 class="fw-bold mb-0 fs-2">Registration</h1>
+        </div>
+
+        <div class="modal-body p-5 pt-0">
+            <form  [formGroup]="registerForm" (ngSubmit)="register()">
+                <div class="form-floating mb-3">
+                    <input type="text" [ngClass]="{'is-invalid':isInvalid(userName), 'is-valid':isValid(userName)}" class="form-control rounded-3" formControlName="userName" id="userName">
+                    <label for="userName">Username</label>
+                    <div *ngIf="isValid(userName)" style="color: green;">
+                        Looks good!
+                    </div>
+                    <div *ngIf="isInvalid(userName)" style="color: red;">
+                        Please enter a username.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" [ngClass]="{'is-invalid':isInvalid(userFirstName), 'is-valid':isValid(userFirstName)}" class="form-control rounded-3" formControlName="userFirstName" id="userFirstName">
+                    <label for="userFirstName">First name</label>
+                    <div *ngIf="isValid(userFirstName)" style="color: green;">
+                        Looks good!
+                    </div>
+                    <div *ngIf="isInvalid(userFirstName)" style="color: red;">
+                        Please enter a first name.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" [ngClass]="{'is-invalid':isInvalid(userLastName), 'is-valid':isValid(userLastName)}" class="form-control rounded-3" formControlName="userLastName" id="userLastName">
+                    <label for="userLastName">Last name</label>
+                    <div *ngIf="isValid(userLastName)" style="color: green;">
+                        Looks good!
+                    </div>
+                    <div *ngIf="isInvalid(userLastName)" style="color: red;">
+                        Please enter a last name.
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" [ngClass]="{'is-invalid':isInvalid(userPassword), 'is-valid':isValid(userPassword)}" class="form-control rounded-3" formControlName="userPassword" id="userPassword">
+                    <label for="userPassword">Password</label>
+                    <div *ngIf="isValid(userPassword)" style="color: green;">
+                        Looks good!
+                    </div>
+                    <div *ngIf="isInvalid(userPassword)" style="color: red;">
+                        Please enter a password.
+                    </div>
+                </div>
+                <button [disabled]="registerForm.invalid" class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" value="Register">Register</button>
+                <div *ngIf="registrationFailMsg" class="d-flex justify-content-center mt-4">
+                    <div class="alert alert-danger d-flex justify-content-center align-items-center" style="width: 500px;" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/>
+                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                        </svg>
+                        <div>
+                            {{registrationFailMsg}}
+                        </div>
+                        <button type="button" class="btn-close ms-5" (click)="resetRegistrationFailMsg()" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                <hr class="my-4">
+                <p class="mb-3">Have already an account?</p>
+                <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-3" type="button" routerLink="/login">Login here</button>
+            </form>
+        </div>
+    </div>
+</div>
